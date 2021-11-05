@@ -10,7 +10,7 @@
     ]
   },
   "hosting": {
-    "public": "sblweb/public",
+    "public": "sblweb/build",
     "site": "mxm-sbl",
     "ignore": [
       "firebase.json",

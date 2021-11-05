@@ -1,7 +1,7 @@
 .idea/
 .DS_Store
-public/
-sblweb/public/
+/public
+sblweb/build/
 
 # Logs
 logs
@@ -68,4 +68,4 @@ node_modules/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
+sblweb/.env
