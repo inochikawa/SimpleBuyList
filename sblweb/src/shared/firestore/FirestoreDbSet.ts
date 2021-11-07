@@ -32,11 +32,19 @@ export class FirestoreDbSet<TData extends IModel> {
     }
 
     getAll = async (...queryConstraint: QueryConstraint[]): Promise<TData[]> => {
-        const q = query(collection(getFirestore(), this._modelInnerProps.FIRESTORE_collectionName), ...queryConstraint);
+        console.log("Get all from ", this._modelInnerProps.FIRESTORE_collectionName);
+
+        const q = query(collection(getFirestore(), this._modelInnerProps.FIRESTORE_collectionName), ...queryConstraint).withConverter(dataConverter);
         const querySnapshot = await getDocs(q);
-        return querySnapshot.docs.map(x => x.data({
-            ...this._modelInnerProps
-        } as FirestoreSnapshotOptions)) as TData[];
+        return querySnapshot.docs.map(x => {
+            const d = x.data({
+                ...this._modelInnerProps
+            } as FirestoreSnapshotOptions);
+
+            console.log(this._modelInnerProps.FIRESTORE_collectionName,": Got data: ", d)
+
+            return d;
+        }) as TData[];
     }
 
     private docWithId = (id: string | undefined) => {

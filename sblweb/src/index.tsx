@@ -4,13 +4,19 @@ import './index.css';
 import App from "./App";
 import reportWebVitals from './reportWebVitals';
 import {initFirebaseApp} from "./firebaseClient";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 import * as dotenv from "dotenv";
+import {RouteCollection} from "./shared/route/RouteCollection";
 
 dotenv.config();
 initFirebaseApp();
 
 ReactDOM.render(
-    <App />,
+    <BrowserRouter>
+        <Routes>
+            <Route path={RouteCollection.root.path} element={<App/>}/>
+        </Routes>
+    </BrowserRouter>,
   document.getElementById('root')
 );
 

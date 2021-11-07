@@ -1,23 +1,21 @@
-import firebase from "firebase/compat";
-import QueryDocumentSnapshot = firebase.firestore.QueryDocumentSnapshot;
-import DocumentData = firebase.firestore.DocumentData;
 import {FirestoreModelInnerProps, FirestoreSnapshotOptions} from "./interfaces";
+import firebase from "firebase/compat";
+
 
 interface IDataConverter {
-    toFirestore: (data: any) => DocumentData;
-    fromFirestore: (snapshot: QueryDocumentSnapshot, options: FirestoreSnapshotOptions) => any;
+    toFirestore: (data: any) => firebase.firestore.DocumentData;
+    fromFirestore: (snapshot: firebase.firestore.QueryDocumentSnapshot, options: FirestoreSnapshotOptions) => any;
 }
 
 class DataConverterImplementation implements IDataConverter {
-    fromFirestore(snapshot: QueryDocumentSnapshot<DocumentData>, options: FirestoreSnapshotOptions): any {
-        const data = {
+    fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot<firebase.firestore.DocumentData>, options: FirestoreSnapshotOptions): any {
+        return {
             ...snapshot.data()!, // all props from DB
             ...options // additional props that indicates what collection and ignored props
         };
-        return data;
     }
 
-    toFirestore(data: any): DocumentData {
+    toFirestore(data: any): firebase.firestore.DocumentData {
         const ignoredProps: string[] = (data as FirestoreModelInnerProps).FIRESTORE_ignoredProps;
         const props = Object.keys(data).filter(x => ignoredProps.every(y => x !== y));
 
