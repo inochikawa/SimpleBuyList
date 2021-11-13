@@ -1,6 +1,6 @@
 import React from "react";
 import {Login} from "./components/login";
-import {Link, Route, Routes, useNavigate} from "react-router-dom";
+import { Route, Routes, useNavigate} from "react-router-dom";
 import {RouteCollection} from "./shared/route/RouteCollection";
 import {ProductList} from "./components/products";
 import {Layout, Menu} from "antd";

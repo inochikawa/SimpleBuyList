@@ -1,0 +1,37 @@
+name: Deploy firebase functions
+'on':
+  push:
+    branches:
+      - master
+
+jobs:
+  build_functions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          npm --prefix ./functions ci
+          npm --prefix ./functions run lint
+          npm --prefix ./functions run build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: func-build-artifact
+          path: ./functions/lib
+
+  deploy_functions:
+    needs: build_functions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download functions artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: func-build-artifact
+          path: ./functions/lib
+      - name: Install npm packages (required for deploy)
+        run: npm --prefix ./functions ci
+      - name: Install firebase cli tools
+        run: sudo curl -sL https://firebase.tools | bash
+      - name: Deploy functions
+        run: firebase deploy --only functions --token ${{ secrets.FIREBASE_TOKEN }}
