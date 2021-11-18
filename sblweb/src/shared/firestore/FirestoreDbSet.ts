@@ -1,7 +1,8 @@
-import {collection, doc, getDoc, getDocs, getFirestore, query, QueryConstraint, setDoc} from "firebase/firestore";
+import {collection, doc, getDoc, getDocs, getFirestore, onSnapshot, query, QueryConstraint, setDoc} from "firebase/firestore";
 import {dataConverter} from "./DataConverter";
 import {IModel} from "./models/IModel";
 import {FirestoreModelInnerProps, FirestoreSnapshotOptions} from "./interfaces";
+import firebase from "firebase/compat";
 
 export class FirestoreDbSet<TData extends IModel> {
     private readonly _modelInnerProps: FirestoreModelInnerProps;
@@ -45,6 +46,13 @@ export class FirestoreDbSet<TData extends IModel> {
 
             return d;
         }) as TData[];
+    }
+
+    subscribeOnDataChange = (onChange: (querySnapshot: firebase.firestore.QuerySnapshot<TData>) => void) => {
+        const q = query(collection(getFirestore(), this._modelInnerProps.FIRESTORE_collectionName)).withConverter(dataConverter);
+        return onSnapshot(q, (snapshot) => {
+            onChange(snapshot as any);
+        });
     }
 
     private docWithId = (id: string | undefined) => {

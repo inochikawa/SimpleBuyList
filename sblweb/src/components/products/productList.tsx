@@ -24,6 +24,18 @@ const productsOrder = orderBy("createdDate");
 
 export const ProductList = () => {
     const dbSet = useRef(new DbSetCollection().products).current;
+    const subscription = useRef(dbSet.subscribeOnDataChange(querySnapshot => {
+        const allDocsCount = querySnapshot.docs.length;
+        const changedDocsCount = querySnapshot.docChanges().filter(x => x.type === "added").length;
+        const isInitialChange = allDocsCount === changedDocsCount;
+
+        if (isInitialChange) {
+            return;
+        }
+
+        setIsLoading(true);
+        reloadProducts();
+    })).current;
     const [products, setProducts] = useState([] as Product[]);
     const [isLoading, setIsLoading] = useState(false);
     const [showCompleted, setShowCompleted] = useState(false);
