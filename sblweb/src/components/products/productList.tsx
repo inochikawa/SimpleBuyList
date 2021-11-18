@@ -24,6 +24,7 @@ const productsOrder = orderBy("createdDate");
 
 export const ProductList = () => {
     const dbSet = useRef(new DbSetCollection().products).current;
+    // eslint-disable-next-line
     const subscription = useRef(dbSet.subscribeOnDataChange(querySnapshot => {
         const allDocsCount = querySnapshot.docs.length;
         const changedDocsCount = querySnapshot.docChanges().filter(x => x.type === "added").length;
