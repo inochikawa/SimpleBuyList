@@ -12,4 +12,5 @@ export class Product implements IModel {
 
     public name: string | undefined;
     public wasBought: boolean = false;
+    public isUrgent: boolean = false;
 }

@@ -4,8 +4,10 @@ import { Route, Routes, useNavigate} from "react-router-dom";
 import {RouteCollection} from "./shared/route/RouteCollection";
 import {ProductList} from "./components/products";
 import {Layout, Menu} from "antd";
+import {CalendarOutlined, HomeOutlined, UnorderedListOutlined} from "@ant-design/icons";
+import {Home} from "./components/home/home";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Footer } = Layout;
 
 function App() {
     const navigate = useNavigate();
@@ -14,18 +16,16 @@ function App() {
     <>
         <Layout>
             <Header>
-                Simple buy list
+                <Menu mode={"horizontal"}>
+                    <Menu.Item key={0} icon={<HomeOutlined />} onClick={() => navigate(RouteCollection.root.path)}>Home</Menu.Item>
+                    <Menu.Item key={1} icon={<UnorderedListOutlined />} onClick={() => navigate(RouteCollection.productList.path)}>Products</Menu.Item>
+                    <Menu.Item key={2} icon={<CalendarOutlined />} >Forik schedule</Menu.Item>
+                </Menu>
             </Header>
             <Layout>
-                <Sider>
-                    <Menu>
-                        <Menu.Item key={0} onClick={() => navigate(RouteCollection.root.path)}>Home</Menu.Item>
-                        <Menu.Item key={1} onClick={() => navigate(RouteCollection.productList.path)}>What to buy?</Menu.Item>
-                        <Menu.Item key={2}>Forik kushat schedule</Menu.Item>
-                    </Menu>
-                </Sider>
                 <Content>
                     <Routes>
+                        <Route path={RouteCollection.root.path} element={<Home/>}/>
                         <Route path={RouteCollection.productList.path} element={<ProductList/>}/>
                         <Route path={RouteCollection.login.path} element={<Login/>}/>
                     </Routes>
