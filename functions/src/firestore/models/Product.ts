@@ -1,4 +1,4 @@
-import { v4 as guid } from "uuid";
+import {v4 as guid} from "uuid";
 
 export class Product {
     public id: string = guid();
